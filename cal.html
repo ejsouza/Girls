@@ -34,7 +34,13 @@
 		}
 		.show {
 			width: 460px;
-			height: 50px;
+			text-align: right;
+		}
+
+		.show p {
+			padding-right: 16px;
+			font-size: 36px;
+			margin: 8px;
 		}
 
 		.button {
@@ -48,8 +54,60 @@
 		}
 	</style>
 	<script>
-		const hanldeclick = e => {
-			console.log(' clicked ', e);
+		const hanldeclick = (e) => {
+			console.log(' clicked ', e.value);
+		}
+
+		const handleClickNumber = e => {
+			const operation = document.querySelector('#cal');
+			if (operation.innerHTML === '0') {
+				operation.innerHTML = e.value;
+			} else {
+				operation.innerHTML += e.value;
+			}
+		}
+
+		const handleClickOperator = e => {
+			const operation = document.querySelector('#cal');
+			if (operation.innerHTML === '0' && (e.value === '-' || e.value === '+')) {
+				operation.innerHTML = e.value;
+			} else {
+				operation.innerHTML += ` ${e.value} `;
+			}
+		}
+
+		const hanldeCalculation = () => {
+			const operation = document.querySelector('#cal');
+			const array = operation.innerHTML.split(/(-|\+|x|\/|%)/g);
+		
+
+			if (array.length === 3) {
+				let number = 0;
+				switch (array[1]) {
+					case '+':
+						number = Number(array[0]) + Number(array[2]);
+						break;
+					case '-':
+						number = Number(array[0]) - Number(array[2]);
+						break;
+					case 'x':
+						number = Number(array[0]) * Number(array[2]);
+						break;
+					case '/':
+						number = Number(array[0]) / Number(array[2]);
+						break;
+					default:
+						number = Number(array[0]) % Number(array[2]);
+						break;
+				}
+
+				operation.innerHTML = number;
+			}
+		}
+
+		const hanldeClear = () => {
+			operation = document.querySelector('#cal');
+			operation.innerHTML = '0';
 		}
 	</script>
 </head>
@@ -57,37 +115,38 @@
 	<main class="line">
 		<div class="flex-container">
 			<div class="line show">
+				<p id="cal">0</p>
 			</div>
 		</div>
 		<div class="flex-container">
-			<div><button class="button">(</button></div>
-			<div><button class="button">)</button></div>
-			<div><button class="button">%</button></div>
-			<div><button class="button">AC</button></div>
+			<div><button class="button" value="(" onclick='hanldeclick(this)'>(</button></div>
+			<div><button class="button" value=")" onclick='hanldeclick(this)'>)</button></div>
+			<div><button class="button" value="%" onclick='handleClickOperator(this)'>%</button></div>
+			<div><button class="button" value="AC" onclick='hanldeClear(this)'>AC</button></div>
 		</div>
 		<div class="flex-container">
-			<div><button class="button" onclick="hanldeclick(e)">7</button></div>
-			<div><button class="button">8</button></div>
-			<div><button class="button">9</button></div>
-			<div><button class="button">/</button></div>
+			<div><button class="button" value="7" onclick='handleClickNumber(this)'>7</button></div>
+			<div><button class="button" value="8" onclick='handleClickNumber(this)'>8</button></div>
+			<div><button class="button" value="9" onclick='handleClickNumber(this)'>9</button></div>
+			<div><button class="button" value="/" onclick='handleClickOperator(this)'>/</button></div>
 		</div>
 		<div class="flex-container">
-			<div><button class="button">4</button></div>
-			<div><button class="button">5</button></div>
-			<div><button class="button">6</button></div>
-			<div><button class="button">x</button></div>
+			<div><button class="button" value="4" onclick='handleClickNumber(this)'>4</button></div>
+			<div><button class="button" value="5" onclick='handleClickNumber(this)'>5</button></div>
+			<div><button class="button" value="6" onclick='handleClickNumber(this)'>6</button></div>
+			<div><button class="button" value="x" onclick='handleClickOperator(this)'>x</button></div>
 		</div>
 		<div class="flex-container">
-			<div><button class="button">3</button></div>
-			<div><button class="button">2</button></div>
-			<div><button class="button">1</button></div>
-			<div><button class="button">-</button></div>
+			<div><button class="button" value="1" onclick='handleClickNumber(this)'>1</button></div>
+			<div><button class="button" value="2" onclick='handleClickNumber(this)'>2</button></div>
+			<div><button class="button" value="3" onclick='handleClickNumber(this)'>3</button></div>
+			<div><button class="button" value="-" onclick='handleClickOperator(this)'>-</button></div>
 		</div>
 			<div class="flex-container">
-			<div><button class="button">0</button></div>
-			<div><button class="button">.</button></div>
-			<div><button class="button">=</button></div>
-			<div><button class="button">+</button></div>
+			<div><button class="button" value="0" onclick='handleClickNumber(this)'>0</button></div>
+			<div><button class="button" value="." onclick='hanldeclick(this)'>.</button></div>
+			<div><button class="button" value="=" onclick='hanldeCalculation(this)'>=</button></div>
+			<div><button class="button" value="+" onclick='handleClickOperator(this)'>+</button></div>
 		</div>
 	</main>
 </body>
